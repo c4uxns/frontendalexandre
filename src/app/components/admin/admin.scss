@@ -1,0 +1,67 @@
+// Variáveis de estilo
+$primary: #2563eb;
+$primary-hover: #1d4ed8;
+$text: #0f172a;
+$border: #cbd5e1;
+$bg-input: #f8fafc;
+$radius: 8px;
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 380px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: -0.5rem; // Reduz o espaço entre o label e o input correspondente
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: $text;
+    background-color: $bg-input;
+    border: 1.5px solid $border;
+    border-radius: $radius;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: $primary;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba($primary, 0.15);
+    }
+  }
+
+  button[type="submit"] {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: $primary;
+    border: none;
+    border-radius: $radius;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+      background-color: $primary-hover;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
