@@ -1,1 +1,152 @@
-<p>home works!</p>
+<header class="topo">
+  <a class="marca" href="#inicio" aria-label="Alexandre Cosméticos e Produtos Naturais">
+    <svg class="marca__folhas" viewBox="0 0 48 32" aria-hidden="true">
+      <path d="M24 30C12 28 6 18 8 6c12 0 18 8 16 24Z" />
+      <path d="M24 30c-2-16 4-24 16-24 2 12-4 22-16 24Z" />
+    </svg>
+    <span class="marca__nome">Alexandre</span>
+    <span class="marca__sub">Cosméticos &amp; Produtos Naturais</span>
+  </a>
+
+  <nav class="menu" aria-label="Principal">
+    <a href="#produtos">Produtos</a>
+    <a href="#sobre">Nossa proposta</a>
+    <a href="#contato">Contato</a>
+  </nav>
+
+  <button type="button" class="sacola" (click)="alternarCarrinho()" [attr.aria-expanded]="carrinhoAberto()">
+    Sacola
+    <span class="sacola__qtd">{{ totalItens() }}</span>
+  </button>
+</header>
+
+<main id="inicio">
+  <section class="abertura">
+    <div class="abertura__texto">
+      <p class="recado">Que hoje seu dia seja leve.</p>
+      <h1>Sinta-se bem, escolha o natural.</h1>
+      <p class="abertura__apoio">
+        Sabonetes, óleos, chás e ervas selecionados para cuidar da pele, da saúde e da rotina.
+        Atendemos em Porto Velho e enviamos o pedido pelo WhatsApp.
+      </p>
+      <div class="abertura__acoes">
+        <a class="botao" href="#produtos">Ver produtos</a>
+        <a class="botao botao--suave" [href]="'https://instagram.com/' + instagram" target="_blank" rel="noopener">
+          Seguir no Instagram
+        </a>
+      </div>
+    </div>
+
+    <div class="selo" aria-hidden="true">
+      <div class="selo__sol"></div>
+      <div class="selo__nuvem"></div>
+      <div class="selo__xicara">
+        <span class="selo__vapor"></span>
+        <span class="selo__cafe"></span>
+      </div>
+      <div class="selo__faixa">
+        <span>beleza</span><span>saúde</span><span>bem-estar</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="produtos" class="vitrine">
+    <div class="vitrine__cabeca">
+      <h2>Escolha o que combina com o seu dia</h2>
+      <div class="filtros" role="group" aria-label="Filtrar por categoria">
+        @for (c of categorias; track c) {
+          <button type="button" class="filtro" [class.filtro--ativo]="filtro() === c" [attr.aria-pressed]="filtro() === c" (click)="escolher(c)">
+            {{ c }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <ul class="grade">
+      @for (p of visiveis(); track p.id) {
+        <li class="produto">
+          <div class="produto__disco" [class]="'produto__disco tom-' + p.tom">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M52 10C30 10 12 24 12 44c0 4 1 7 3 10 3-14 14-24 30-30-14 8-22 18-26 32 26 2 33-22 33-46Z" />
+            </svg>
+          </div>
+          <h3>{{ p.nome }}</h3>
+          <p class="produto__desc">{{ p.descricao }}</p>
+          <div class="produto__rodape">
+            <span class="produto__preco">{{ moeda(p.preco) }}</span>
+            <button type="button" class="botao botao--pequeno" (click)="adicionar(p)">
+              @if (quantidadeDe(p.id) > 0) {
+                Na sacola ({{ quantidadeDe(p.id) }})
+              } @else {
+                Adicionar
+              }
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section id="sobre" class="proposta">
+    <div class="proposta__texto">
+      <h2>Natural de verdade, sem rodeios</h2>
+      <p>
+        Escolhemos cada item pela composição, não pela embalagem. Se um produto não entra na nossa própria
+        rotina, ele não entra na loja.
+      </p>
+      <p>
+        Dúvida sobre qual sabonete serve para o seu tipo de pele ou qual chá ajuda a relaxar à noite? Mande uma
+        mensagem e a gente indica.
+      </p>
+    </div>
+    <ul class="proposta__lista">
+      <li><strong>Ingredientes claros</strong> Lista de composição à vista em cada produto.</li>
+      <li><strong>Pedido simples</strong> Você monta a sacola e finaliza pelo WhatsApp.</li>
+      <li><strong>Atendimento local</strong> Entregas e retiradas em Porto Velho.</li>
+    </ul>
+  </section>
+</main>
+
+<footer id="contato" class="rodape">
+  <div>
+    <p class="rodape__marca">Alexandre</p>
+    <p class="rodape__sub">Cosméticos &amp; Produtos Naturais</p>
+  </div>
+  <p class="rodape__cta">Agradecemos sua preferência!</p>
+  <a [href]="'https://instagram.com/' + instagram" target="_blank" rel="noopener">&#64;{{ instagram }}</a>
+</footer>
+
+@if (carrinhoAberto()) {
+  <div class="cortina" (click)="alternarCarrinho()"></div>
+  <aside class="gaveta" role="dialog" aria-label="Sua sacola">
+    <div class="gaveta__cabeca">
+      <h2>Sua sacola</h2>
+      <button type="button" class="gaveta__fechar" (click)="alternarCarrinho()" aria-label="Fechar sacola">Fechar</button>
+    </div>
+
+    @if (carrinho().length === 0) {
+      <p class="gaveta__vazia">Sua sacola está vazia. Adicione um produto na vitrine para começar o pedido.</p>
+    } @else {
+      <ul class="gaveta__itens">
+        @for (i of carrinho(); track i.produto.id) {
+          <li>
+            <div>
+              <p class="gaveta__nome">{{ i.produto.nome }}</p>
+              <p class="gaveta__valor">{{ moeda(i.produto.preco * i.quantidade) }}</p>
+            </div>
+            <div class="qtd">
+              <button type="button" (click)="alterar(i.produto.id, -1)" [attr.aria-label]="'Diminuir ' + i.produto.nome">−</button>
+              <span>{{ i.quantidade }}</span>
+              <button type="button" (click)="alterar(i.produto.id, 1)" [attr.aria-label]="'Aumentar ' + i.produto.nome">+</button>
+            </div>
+          </li>
+        }
+      </ul>
+      <div class="gaveta__total">
+        <span>Total</span>
+        <strong>{{ moeda(totalValor()) }}</strong>
+      </div>
+      <a class="botao botao--cheio" [href]="linkPedido()" target="_blank" rel="noopener">Enviar pedido pelo WhatsApp</a>
+    }
+  </aside>
+}

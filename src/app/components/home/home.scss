@@ -1,0 +1,600 @@
+// Fontes (coloque no <head> do src/index.html):
+// <link rel="preconnect" href="https://fonts.googleapis.com">
+// <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+// <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+// Paleta tirada dos selos
+$floresta: #2d4a24; // verde escuro das letras e da faixa
+$folha: #5b7f3a; // verde das folhas
+$musgo: #a9bd8a; // verde claro de apoio
+$creme: #f4f2e2; // fundo do selo
+$papel: #fbfaf1;
+$sol: #f0b232; // amarelo do sol
+$tinta: #22301d;
+
+$serifa: 'Cormorant Garamond', Georgia, serif;
+$texto: 'Nunito Sans', system-ui, sans-serif;
+$mao: 'Caveat', cursive;
+
+::ng-deep html,
+::ng-deep body {
+  margin: 0;
+  padding: 0;
+  background: $creme;
+}
+
+:host {
+  display: block;
+  background: $creme;
+  color: $tinta;
+  font-family: $texto;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  width: 100%;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: $serifa;
+  color: $floresta;
+  line-height: 1.05;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid $sol;
+  outline-offset: 3px;
+}
+
+// ---------- topo ----------
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem clamp(1rem, 4vw, 3rem);
+  background: $papel;
+  border-bottom: 1px solid rgba($floresta, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.marca {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.6rem;
+  align-items: center;
+  text-decoration: none;
+  color: $floresta;
+
+  &__folhas {
+    grid-row: span 2;
+    width: 2.4rem;
+    fill: $folha;
+  }
+  &__nome {
+    font-family: $serifa;
+    font-weight: 700;
+    font-size: 1.7rem;
+    letter-spacing: 0.06em;
+    line-height: 1;
+  }
+  &__sub {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: $folha;
+  }
+}
+
+.menu {
+  display: flex;
+  gap: 1.75rem;
+  margin-left: auto;
+
+  a {
+    text-decoration: none;
+    font-weight: 600;
+    color: $floresta;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+  }
+}
+
+.sacola {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font: 700 1rem $texto;
+  color: $floresta;
+  background: transparent;
+  border: 2px solid $floresta;
+  border-radius: 999px;
+  padding: 0.4rem 0.5rem 0.4rem 1.1rem;
+  cursor: pointer;
+
+  &__qtd {
+    display: grid;
+    place-items: center;
+    min-width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 999px;
+    background: $floresta;
+    color: $creme;
+    font-size: 0.85rem;
+  }
+}
+
+// ---------- botões ----------
+.botao {
+  display: inline-block;
+  font: 700 1rem $texto;
+  text-decoration: none;
+  text-align: center;
+  background: $floresta;
+  color: $creme;
+  border: 2px solid $floresta;
+  border-radius: 999px;
+  padding: 0.75rem 1.6rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: $folha;
+    border-color: $folha;
+  }
+  &--suave {
+    background: transparent;
+    color: $floresta;
+
+    &:hover {
+      background: $floresta;
+      border-color: $floresta;
+      color: $creme;
+    }
+  }
+  &--pequeno {
+    font-size: 0.9rem;
+    padding: 0.45rem 1.1rem;
+  }
+  &--cheio {
+    display: block;
+  }
+}
+
+// ---------- abertura ----------
+.abertura {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vw, 6rem) clamp(1rem, 4vw, 3rem);
+
+  h1 {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 700;
+    max-width: 11ch;
+  }
+  &__apoio {
+    max-width: 46ch;
+    margin: 1.5rem 0 2rem;
+  }
+  &__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+}
+
+.recado {
+  font-family: $mao;
+  font-size: 1.7rem;
+  color: $folha;
+  margin: 0 0 0.5rem;
+}
+
+// selo circular (remete aos adesivos da marca)
+.selo {
+  position: relative;
+  aspect-ratio: 1;
+  width: min(100%, 440px);
+  margin-inline: auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: $papel;
+  border: 6px solid $papel;
+  box-shadow: 0 0 0 2px $floresta;
+
+  &__sol {
+    position: absolute;
+    top: 14%;
+    right: 14%;
+    width: 26%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: $sol;
+    box-shadow: 0 0 0 10px rgba($sol, 0.25), 0 0 0 22px rgba($sol, 0.12);
+    animation: nascer 1.4s ease-out both;
+  }
+  &__nuvem {
+    position: absolute;
+    top: 30%;
+    right: 8%;
+    width: 34%;
+    height: 9%;
+    border-radius: 999px;
+    background: $creme;
+  }
+  &__xicara {
+    position: absolute;
+    left: 14%;
+    bottom: 26%;
+    width: 38%;
+    height: 24%;
+    background: $musgo;
+    border-radius: 6% 6% 50% 50% / 6% 6% 70% 70%;
+  }
+  &__cafe {
+    position: absolute;
+    top: 8%;
+    left: 6%;
+    right: 6%;
+    height: 14%;
+    border-radius: 50%;
+    background: $floresta;
+  }
+  &__vapor {
+    position: absolute;
+    bottom: 100%;
+    left: 38%;
+    width: 22%;
+    height: 70%;
+    border: 4px solid rgba($folha, 0.45);
+    border-bottom: 0;
+    border-radius: 50% 50% 0 0;
+  }
+  &__faixa {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 30%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.9rem;
+    padding-bottom: 12%;
+    background: $floresta;
+    border-radius: 50% 50% 0 0 / 28% 28% 0 0;
+    color: $musgo;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+}
+
+@keyframes nascer {
+  from {
+    transform: translateY(40%);
+    opacity: 0;
+  }
+}
+
+// ---------- vitrine ----------
+.vitrine {
+  background: $papel;
+  padding: clamp(3rem, 7vw, 5.5rem) clamp(1rem, 4vw, 3rem);
+
+  &__cabeca {
+    max-width: 1180px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.25rem;
+
+    h2 {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      max-width: 16ch;
+    }
+  }
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filtro {
+  font: 600 0.95rem $texto;
+  color: $floresta;
+  background: transparent;
+  border: 2px solid rgba($floresta, 0.3);
+  border-radius: 999px;
+  padding: 0.4rem 1.1rem;
+  cursor: pointer;
+
+  &--ativo {
+    background: $floresta;
+    border-color: $floresta;
+    color: $creme;
+  }
+}
+
+.grade {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1180px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 2.5rem 2rem;
+}
+
+.produto {
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    font-size: 1.6rem;
+    margin-top: 1rem;
+  }
+  &__desc {
+    margin: 0.4rem 0 1rem;
+    font-size: 0.95rem;
+    color: rgba($tinta, 0.8);
+    flex: 1;
+  }
+  &__rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba($floresta, 0.2);
+  }
+  &__preco {
+    font-weight: 700;
+    color: $floresta;
+  }
+  &__disco {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 3px solid $papel;
+    box-shadow: 0 0 0 2px $floresta;
+
+    svg {
+      width: 38%;
+      fill: rgba($creme, 0.92);
+    }
+  }
+}
+
+.tom-folha {
+  background: $folha;
+}
+.tom-mel {
+  background: $sol;
+  svg {
+    fill: $floresta;
+  }
+}
+.tom-argila {
+  background: #8a6a3f;
+}
+.tom-creme {
+  background: $musgo;
+  svg {
+    fill: $floresta;
+  }
+}
+
+// ---------- proposta ----------
+.proposta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 5.5rem) clamp(1rem, 4vw, 3rem);
+
+  h2 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    margin-bottom: 1.25rem;
+  }
+  &__texto p {
+    max-width: 52ch;
+  }
+  &__lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    align-content: center;
+
+    li {
+      padding-left: 1.25rem;
+      border-left: 4px solid $folha;
+    }
+    strong {
+      display: block;
+      font-family: $serifa;
+      font-size: 1.5rem;
+      color: $floresta;
+    }
+  }
+}
+
+// ---------- rodapé ----------
+.rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem);
+  background: $floresta;
+  color: $creme;
+
+  p {
+    margin: 0;
+  }
+  &__marca {
+    font-family: $serifa;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  &__sub {
+    font-size: 0.8rem;
+    color: $musgo;
+  }
+  &__cta {
+    font-family: $mao;
+    font-size: 1.8rem;
+    color: $sol;
+  }
+  a {
+    font-weight: 700;
+  }
+}
+
+// ---------- sacola ----------
+.cortina {
+  position: fixed;
+  inset: 0;
+  background: rgba($tinta, 0.45);
+  z-index: 20;
+}
+
+.gaveta {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(100%, 400px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: $papel;
+  overflow-y: auto;
+
+  &__cabeca {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      font-size: 2rem;
+    }
+  }
+  &__fechar {
+    font: 600 0.95rem $texto;
+    background: none;
+    border: 0;
+    color: $floresta;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  &__vazia {
+    color: rgba($tinta, 0.8);
+  }
+  &__itens {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    flex: 1;
+    align-content: start;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba($floresta, 0.2);
+    }
+  }
+  &__nome {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  &__valor {
+    margin: 0.2rem 0 0;
+    font-size: 0.9rem;
+    color: $folha;
+  }
+  &__total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    color: $floresta;
+  }
+}
+
+.qtd {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  button {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 2px solid $floresta;
+    background: transparent;
+    color: $floresta;
+    font: 700 1.1rem $texto;
+    cursor: pointer;
+  }
+  span {
+    min-width: 1.2rem;
+    text-align: center;
+    font-weight: 700;
+  }
+}
+
+// ---------- responsivo ----------
+@media (max-width: 860px) {
+  .abertura,
+  .proposta {
+    grid-template-columns: 1fr;
+  }
+  .selo {
+    width: min(80%, 360px);
+  }
+  .menu {
+    display: none;
+  }
+  .sacola {
+    margin-left: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selo__sol {
+    animation: none;
+  }
+  .botao {
+    transition: none;
+  }
+}
