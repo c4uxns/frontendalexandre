@@ -1,152 +1,147 @@
-<header class="topo">
-  <a class="marca" href="#inicio" aria-label="Alexandre Cosméticos e Produtos Naturais">
-    <svg class="marca__folhas" viewBox="0 0 48 32" aria-hidden="true">
-      <path d="M24 30C12 28 6 18 8 6c12 0 18 8 16 24Z" />
-      <path d="M24 30c-2-16 4-24 16-24 2 12-4 22-16 24Z" />
+<!-- HEADER -->
+<header>
+  <div class="brand">
+    <svg class="brand-logo-svg" viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M50 15 C30 15 15 35 15 55 C15 75 35 85 50 85 C65 85 85 75 85 55 C85 35 70 15 50 15 Z" fill="none" stroke="currentColor" stroke-width="2" opacity="0.3" />
+      <path d="M48 20 C35 30 25 45 28 65 C35 60 48 50 50 35 C50 28 49 22 48 20 Z" fill="var(--dourado)" />
+      <path d="M52 20 C65 30 75 45 72 65 C65 60 52 50 50 35 C50 28 51 22 52 20 Z" fill="var(--dourado)" />
+      <path d="M50 35 L50 80" stroke="var(--dourado)" stroke-width="3" stroke-linecap="round" />
+      <path d="M50 60 C40 60 35 52 32 48 C38 48 46 54 50 60 Z" fill="var(--dourado)" />
+      <path d="M50 60 C60 60 65 52 68 48 C62 48 54 54 50 60 Z" fill="var(--dourado)" />
     </svg>
-    <span class="marca__nome">Alexandre</span>
-    <span class="marca__sub">Cosméticos &amp; Produtos Naturais</span>
-  </a>
-
-  <nav class="menu" aria-label="Principal">
-    <a href="#produtos">Produtos</a>
-    <a href="#sobre">Nossa proposta</a>
-    <a href="#contato">Contato</a>
-  </nav>
-
-  <button type="button" class="sacola" (click)="alternarCarrinho()" [attr.aria-expanded]="carrinhoAberto()">
-    Sacola
-    <span class="sacola__qtd">{{ totalItens() }}</span>
-  </button>
+    <div class="brand-text">
+      <span class="brand-title">ALEXANDRE</span>
+      <span class="brand-subtitle">Cosméticos &amp; Produtos Naturais</span>
+    </div>
+  </div>
 </header>
 
-<main id="inicio">
-  <section class="abertura">
-    <div class="abertura__texto">
-      <p class="recado">Que hoje seu dia seja leve.</p>
-      <h1>Sinta-se bem, escolha o natural.</h1>
-      <p class="abertura__apoio">
-        Sabonetes, óleos, chás e ervas selecionados para cuidar da pele, da saúde e da rotina.
-        Atendemos em Porto Velho e enviamos o pedido pelo WhatsApp.
-      </p>
-      <div class="abertura__acoes">
-        <a class="botao" href="#produtos">Ver produtos</a>
-        <a class="botao botao--suave" [href]="'https://instagram.com/' + instagram" target="_blank" rel="noopener">
-          Seguir no Instagram
-        </a>
-      </div>
-    </div>
+<!-- VITRINE / CATÁLOGO -->
+<div class="view-section">
+  <section class="hero">
+    <svg class="hero-bg-leaf hero-bg-leaf-left" viewBox="0 0 100 100" fill="#ffffff" aria-hidden="true">
+      <path d="M50 0 C20 30 0 70 50 100 C100 70 80 30 50 0 Z" />
+    </svg>
+    <svg class="hero-bg-leaf hero-bg-leaf-right" viewBox="0 0 100 100" fill="#ffffff" aria-hidden="true">
+      <path d="M50 0 C20 30 0 70 50 100 C100 70 80 30 50 0 Z" />
+    </svg>
 
-    <div class="selo" aria-hidden="true">
-      <div class="selo__sol"></div>
-      <div class="selo__nuvem"></div>
-      <div class="selo__xicara">
-        <span class="selo__vapor"></span>
-        <span class="selo__cafe"></span>
+    <div class="hero-container">
+      <div class="hero-left">
+        <div class="greeting-badge">  
+          <span>Cuidado Diário &amp; Bem-Estar</span>
+        </div>
+        <h1 class="greeting-title">Olá!</h1>
+        <p class="hero-message">
+          Que hoje seu dia seja leve, abençoado e cheio de boas escolhas! Desenvolvemos produtos com o melhor que
+          a natureza pode oferecer para a sua pele e saúde.
+        </p>
+        <div class="hero-slogan-box">
+          <span>🌿</span>
+          <span>Sinta-se bem, escolha o natural!</span>
+        </div>
       </div>
-      <div class="selo__faixa">
-        <span>beleza</span><span>saúde</span><span>bem-estar</span>
+
+      <div class="hero-right">
+        <div class="hero-illustration-card">
+          <svg class="sun-icon" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="22" fill="#f8b324" />
+            <path d="M50 12 L50 2 M50 98 L50 88 M12 50 L2 50 M98 50 L88 50 M23 23 L16 16 M84 84 L77 77 M23 77 L16 84 M84 16 L77 23" stroke="#f8b324" stroke-width="5" stroke-linecap="round" />
+          </svg>
+
+          <svg class="coffee-icon" viewBox="0 0 120 120" aria-hidden="true">
+            <path d="M55 28 C55 22 48 20 45 25 C42 20 35 22 35 28 C35 35 45 42 45 42 C45 42 55 35 55 28 Z" fill="#ffffff" opacity="0.8" />
+            <path d="M75 22 C75 17 69 15 67 19 C64 15 58 17 58 22 C58 28 67 34 67 34 C67 34 75 28 75 22 Z" fill="#ffffff" opacity="0.6" />
+            <rect x="30" y="48" width="50" height="52" rx="12" fill="#3a6b3a" stroke="#1a3c1a" stroke-width="3" />
+            <path d="M60 68 C60 63 53 61 50 66 C47 61 40 63 40 68 C40 75 50 82 50 82 C50 82 60 75 60 68 Z" fill="none" stroke="#f8f5ee" stroke-width="2.5" />
+            <path d="M80 58 C90 58 92 82 80 84" fill="none" stroke="#3a6b3a" stroke-width="6" stroke-linecap="round" />
+            <ellipse cx="55" cy="102" rx="35" ry="6" fill="#8b6914" />
+          </svg>
+
+          <span class="hero-note">Sua rotina natural começa aqui</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="produtos" class="vitrine">
-    <div class="vitrine__cabeca">
-      <h2>Escolha o que combina com o seu dia</h2>
-      <div class="filtros" role="group" aria-label="Filtrar por categoria">
-        @for (c of categorias; track c) {
-          <button type="button" class="filtro" [class.filtro--ativo]="filtro() === c" [attr.aria-pressed]="filtro() === c" (click)="escolher(c)">
-            {{ c }}
-          </button>
-        }
+  <main>
+    <div class="section-header">
+      <h2 class="section-title">Nosso Catálogo</h2>
+      <div class="divider-leaf">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--verde-principal)" aria-hidden="true">
+          <path d="M17,8C14,8 10,10 8,15C12,15 16,13 18,10C18.5,9.2 18,8 17,8Z" />
+        </svg>
       </div>
+      <p class="section-subtitle">Conheça nossa linha exclusiva de cosméticos e tratamentos 100% naturais.</p>
     </div>
 
-    <ul class="grade">
-      @for (p of visiveis(); track p.id) {
-        <li class="produto">
-          <div class="produto__disco" [class]="'produto__disco tom-' + p.tom">
-            <svg viewBox="0 0 64 64" aria-hidden="true">
-              <path d="M52 10C30 10 12 24 12 44c0 4 1 7 3 10 3-14 14-24 30-30-14 8-22 18-26 32 26 2 33-22 33-46Z" />
-            </svg>
+    <div class="product-grid">
+      @for (p of produtos(); track p.id) {
+        <div class="product-card">
+          <div class="product-img-wrapper">
+            <span class="product-tag">100% Natural</span>
+            <img class="product-img" [src]="imagem(p)" [alt]="p.nome" (error)="imagemQuebrada($event)" />
           </div>
-          <h3>{{ p.nome }}</h3>
-          <p class="produto__desc">{{ p.descricao }}</p>
-          <div class="produto__rodape">
-            <span class="produto__preco">{{ moeda(p.preco) }}</span>
-            <button type="button" class="botao botao--pequeno" (click)="adicionar(p)">
-              @if (quantidadeDe(p.id) > 0) {
-                Na sacola ({{ quantidadeDe(p.id) }})
-              } @else {
-                Adicionar
-              }
-            </button>
+          <div class="product-body">
+            <h3 class="product-title">{{ p.nome }}</h3>
+            <p class="product-desc">{{ p.descricao }}</p>
+            <div class="product-footer">
+              <span class="product-price">{{ preco(p.preco) }}</span>
+              <a class="btn-contact" [href]="instagramUrl" target="_blank" rel="noopener">
+                <span>Consultar</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </div>
-        </li>
+        </div>
+      } @empty {
+        <div class="grid-vazio">
+          <p>Nenhum produto cadastrado no catálogo no momento.</p>
+        </div>
       }
-    </ul>
-  </section>
-
-  <section id="sobre" class="proposta">
-    <div class="proposta__texto">
-      <h2>Natural de verdade, sem rodeios</h2>
-      <p>
-        Escolhemos cada item pela composição, não pela embalagem. Se um produto não entra na nossa própria
-        rotina, ele não entra na loja.
-      </p>
-      <p>
-        Dúvida sobre qual sabonete serve para o seu tipo de pele ou qual chá ajuda a relaxar à noite? Mande uma
-        mensagem e a gente indica.
-      </p>
-    </div>
-    <ul class="proposta__lista">
-      <li><strong>Ingredientes claros</strong> Lista de composição à vista em cada produto.</li>
-      <li><strong>Pedido simples</strong> Você monta a sacola e finaliza pelo WhatsApp.</li>
-      <li><strong>Atendimento local</strong> Entregas e retiradas em Porto Velho.</li>
-    </ul>
-  </section>
-</main>
-
-<footer id="contato" class="rodape">
-  <div>
-    <p class="rodape__marca">Alexandre</p>
-    <p class="rodape__sub">Cosméticos &amp; Produtos Naturais</p>
-  </div>
-  <p class="rodape__cta">Agradecemos sua preferência!</p>
-  <a [href]="'https://instagram.com/' + instagram" target="_blank" rel="noopener">&#64;{{ instagram }}</a>
-</footer>
-
-@if (carrinhoAberto()) {
-  <div class="cortina" (click)="alternarCarrinho()"></div>
-  <aside class="gaveta" role="dialog" aria-label="Sua sacola">
-    <div class="gaveta__cabeca">
-      <h2>Sua sacola</h2>
-      <button type="button" class="gaveta__fechar" (click)="alternarCarrinho()" aria-label="Fechar sacola">Fechar</button>
     </div>
 
-    @if (carrinho().length === 0) {
-      <p class="gaveta__vazia">Sua sacola está vazia. Adicione um produto na vitrine para começar o pedido.</p>
-    } @else {
-      <ul class="gaveta__itens">
-        @for (i of carrinho(); track i.produto.id) {
-          <li>
-            <div>
-              <p class="gaveta__nome">{{ i.produto.nome }}</p>
-              <p class="gaveta__valor">{{ moeda(i.produto.preco * i.quantidade) }}</p>
-            </div>
-            <div class="qtd">
-              <button type="button" (click)="alterar(i.produto.id, -1)" [attr.aria-label]="'Diminuir ' + i.produto.nome">−</button>
-              <span>{{ i.quantidade }}</span>
-              <button type="button" (click)="alterar(i.produto.id, 1)" [attr.aria-label]="'Aumentar ' + i.produto.nome">+</button>
-            </div>
-          </li>
-        }
-      </ul>
-      <div class="gaveta__total">
-        <span>Total</span>
-        <strong>{{ moeda(totalValor()) }}</strong>
+    <div class="instagram-banner">
+      <div class="instagram-info">
+        <h3>Fale com a gente no Instagram!</h3>
+        <p>
+          Acompanhe dicas diárias de cuidados naturais, bastidores e novidades do nosso catálogo diretamente no
+          nosso perfil oficial.
+        </p>
       </div>
-      <a class="botao botao--cheio" [href]="linkPedido()" target="_blank" rel="noopener">Enviar pedido pelo WhatsApp</a>
-    }
-  </aside>
-}
+      <a class="btn-instagram" [href]="instagramUrl" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+        </svg>
+        &#64;alexandrecosmeticospvh
+      </a>
+    </div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="var(--dourado)" aria-hidden="true">
+        <path d="M48 20 C35 30 25 45 28 65 C35 60 48 50 50 35 Z" />
+        <path d="M52 20 C65 30 75 45 72 65 C65 60 52 50 50 35 Z" />
+        <path d="M50 35 L50 80" stroke="var(--dourado)" stroke-width="4" />
+      </svg>
+      <div>
+        <strong>ALEXANDRE</strong><br />
+        <small>COSMÉTICOS &amp; PRODUTOS NATURAIS</small>
+      </div>
+    </div>
+
+    <p class="footer-text">
+      Proporcionando saúde, beleza e bem-estar atrelados ao cuidado consciente com a natureza.
+    </p>
+  </div>
+
+  <div class="footer-bottom">
+    &copy; {{ anoAtual }} ALEXANDRE Cosméticos &amp; Produtos Naturais — Todos os direitos reservados.
+  </div>
+</footer>

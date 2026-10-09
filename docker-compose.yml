@@ -6,6 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: angular_app
+    restart: "no"
     ports:
       - "8080:80"
-    restart: always
