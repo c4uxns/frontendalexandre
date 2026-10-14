@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-</head>
-<body>
-  
-  <form>
-  <label for="email">Email: </label>
-  <input type="email" id="email" name="email">
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-card">
+    <h2>Acessar Conta</h2>
+    
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" formControlName="email" placeholder="seu@email.com">
+    </div>
 
-  <label for="password">Password: </label>
-  <input type="password" id="password" name="password">
+    <div class="form-group">
+      <label for="password">Senha</label>
+      <input type="password" id="password" formControlName="password" placeholder="••••••••••••••••">
+    </div>
 
-  <button type="submit">Login</button>
-</form>
-
-</body>
-</html>
+    <!-- Botão principal de envio -->
+    <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+  </form>
+</div>
