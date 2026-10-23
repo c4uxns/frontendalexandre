@@ -716,3 +716,17 @@ footer {
     animation: none;
   }
 }
+
+.btn-login-discreto {
+  background: transparent;
+  border: 1px solid rgba($ouro, 0.4);
+  color: $ouro;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: 0.2s;
+  &:hover {
+    background: rgba($ouro, 0.1);
+  }
+}

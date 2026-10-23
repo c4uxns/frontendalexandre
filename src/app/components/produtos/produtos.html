@@ -1,1 +1,131 @@
-<h1>CUZIIIN</h1>
+<!-- HEADER DO PAINEL DE PRODUTOS -->
+<header>
+  <div class="brand">
+    <div class="brand-text">
+      <span class="brand-title">PAINEL ADMINISTRATIVO</span>
+      <span class="brand-subtitle">Gerenciamento de Produtos</span>
+    </div>
+  </div>
+  <a class="btn-admin-nav" routerLink="/">Ver Site / Sair</a>
+</header>
+
+<div class="view-section">
+  <main>
+    <div class="admin-topbar">
+      <div class="admin-title-area">
+        <h2>Controle de Produtos</h2>
+        <p>Cadastre novos produtos ou exclua pelo nome diretamente no banco de dados.</p>
+      </div>
+      <div class="admin-btn-group">
+        <button class="btn-action-primary" (click)="abrirModal()">
+          <span>+ Novo Produto</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CARDS INFORMATIVOS -->
+    <div class="admin-stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total de Produtos</div>
+        <div class="stat-value">{{ total() }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Preço Médio</div>
+        <div class="stat-value">{{ precoFormatado(precoMedio()) }}</div>
+      </div>
+    </div>
+
+    <!-- TABELA DE GERENCIAMENTO -->
+    <div class="admin-table-card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Imagem</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Preço</th>
+              <th>Quantidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of produtos(); track p.id ?? p.nome) {
+              <tr>
+                <td>
+                  <img class="table-prod-img" [src]="imagem(p)" [alt]="p.nome" (error)="imagemQuebrada($event)" />
+                </td>
+                <td><strong>{{ p.nome }}</strong></td>
+                <td class="cell-desc">{{ p.descricao }}</td>
+                <td>{{ precoFormatado(p.preco) }}</td>
+                <td>{{ p.quantidade }}</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn-tbl btn-tbl-edit" (click)="abrirModal(p)">Editar</button>
+                    <button class="btn-tbl btn-tbl-delete" (click)="excluirProduto(p)">Excluir</button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="cell-vazia">
+                  @if (carregando()) {
+                    Carregando produtos do banco de dados...
+                  } @else {
+                    Nenhum produto cadastrado no banco de dados.
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL DE CADASTRO E EDIÇÃO -->
+@if (modalAberto()) {
+  <div class="modal-overlay" (click)="fecharModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ form.id ? 'Editar Produto' : 'Novo Produto' }}</h3>
+        <button class="btn-close-modal" (click)="fecharModal()">&times;</button>
+      </div>
+
+      <form (submit)="$event.preventDefault(); salvarProduto()">
+        <div class="form-group">
+          <label for="nomeProd">Nome do Produto</label>
+          <input id="nomeProd" type="text" [(ngModel)]="form.nome" name="nome" required placeholder="Ex: Óleo Essencial..." />
+        </div>
+
+        <div class="form-group">
+          <label for="precoProd">Preço (R$)</label>
+          <input id="precoProd" type="number" step="0.01" [(ngModel)]="form.preco" name="preco" required placeholder="0.00" />
+        </div>
+
+        <div class="form-group">
+          <label for="qtdProd">Quantidade</label>
+          <input id="qtdProd" type="number" [(ngModel)]="form.quantidade" name="quantidade" required placeholder="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="descProd">Descrição</label>
+          <textarea id="descProd" rows="3" [(ngModel)]="form.descricao" name="descricao" required placeholder="Detalhes do produto..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="imgProd">Arquivo de Imagem</label>
+          <input id="imgProd" type="file" (change)="onFileSelected($event)" accept="image/*" />
+        </div>
+
+        <div class="modal-acoes">
+          <button type="button" class="btn-action-secondary" (click)="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn-action-primary" [disabled]="salvando()">
+            {{ salvando() ? 'Salvando...' : 'Salvar no Banco' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

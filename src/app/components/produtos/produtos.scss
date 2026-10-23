@@ -1,0 +1,377 @@
+// Variables
+$verde: #1a3c1a;
+$verde2: #3a6b3a;
+$ouro: #d4a843;
+$ouro2: #8b6914;
+$creme: #f8f5ee;
+$suave: #5c6e5c;
+$borda: #e2dacd;
+$sombra: 0 4px 12px rgba($verde, 0.08);
+
+@mixin serifa($size, $cor: $verde) {
+  font: 700 #{$size} 'Playfair Display', serif;
+  color: $cor;
+}
+
+@mixin flex($j: space-between, $a: center, $g: 0) {
+  display: flex;
+  justify-content: $j;
+  align-items: $a;
+  gap: $g;
+}
+
+@mixin cartao($r: 20px) {
+  background: #fff;
+  border: 1px solid $borda;
+  border-radius: $r;
+  box-shadow: $sombra;
+}
+
+%botao {
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+%pilula {
+  @extend %botao;
+  @include flex(center, center, 8px);
+  display: inline-flex;
+  border-radius: 30px;
+}
+
+// Reset para remover bordas brancas do navegador no componente e na página
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: $creme;
+  color: #233323;
+  font-family: 'Montserrat', sans-serif;
+  --dourado: #{$ouro};
+  --verde-principal: #{$verde};
+}
+
+// Força remoção de margens no body e reset básico para o componente
+::ng-deep body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: $creme;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}   
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+// Header
+header {
+  @include flex;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 1rem 2rem;
+  background: $verde;
+  color: $creme;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  @include serifa(1.4rem, $creme);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.brand-subtitle {
+  margin-top: 4px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: $ouro;
+}
+
+.btn-admin-nav {
+  @extend %pilula;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.85rem;
+  background: none;
+  border: 1.5px solid $ouro;
+  color: $ouro;
+  &:hover {
+    background: $ouro;
+    color: $verde;
+  }
+}
+
+// Container principal
+.view-section {
+  animation: entrar 0.4s both;
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+// Painel Admin & Topbar
+.admin-topbar {
+  @include flex(space-between, center, 1rem);
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.admin-title-area {
+  h2 {
+    @include serifa(2rem);
+  }
+  p {
+    font-size: 0.88rem;
+    color: $suave;
+  }
+}
+
+.admin-btn-group {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-action-primary,
+.btn-action-secondary {
+  @extend %botao;
+  @include flex(center, center, 6px);
+  display: inline-flex;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.88rem;
+  border: 1.5px solid $verde;
+  border-radius: 10px;
+}
+
+.btn-action-primary {
+  color: #fff;
+  background: $verde;
+  &:hover {
+    background: $verde2;
+    border-color: $verde2;
+  }
+}
+
+.btn-action-secondary {
+  color: $verde;
+  background: none;
+  &:hover {
+    color: #fff;
+    background: $verde;
+  }
+}
+
+// Grid de Cards Informativos
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  @include cartao(16px);
+  padding: 1.2rem;
+}
+
+.stat-label {
+  margin-bottom: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: $suave;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $verde;
+}
+
+// Tabela de Produtos
+.admin-table-card {
+  @include cartao;
+  overflow: hidden;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th {
+  padding: 1rem 1.2rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: $creme;
+  background: $verde;
+}
+
+td {
+  padding: 1.1rem 1.2rem;
+  font-size: 0.9rem;
+  vertical-align: middle;
+  border-bottom: 1px solid $borda;
+}
+
+tr:last-child td {
+  border: 0;
+}
+
+tr:hover td {
+  background: #faf7f2;
+}
+
+.cell-desc {
+  max-width: 280px;
+  font-size: 0.85rem;
+  color: $suave;
+}
+
+.cell-vazia {
+  padding: 2rem;
+  text-align: center;
+  color: $suave;
+}
+
+.table-prod-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid $borda;
+}
+
+.table-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-tbl {
+  @extend %botao;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  color: #fff;
+  border-radius: 6px;
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.btn-tbl-edit {
+  background: $ouro;
+}
+
+.btn-tbl-delete {
+  background: #c94a4a;
+}
+
+// Modal Form
+.modal-overlay {
+  @include flex(center);
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  padding: 1rem;
+  background: rgba(#000, 0.55);
+  backdrop-filter: blur(4px);
+  animation: entrar 0.3s;
+}
+
+.modal-card {
+  @include cartao(24px);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.modal-header {
+  @include flex;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid $borda;
+  h3 {
+    @include serifa(1.5rem);
+  }
+}
+
+.btn-close-modal {
+  font-size: 1.5rem;
+  color: $suave;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: $verde;
+  }
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    background: $creme;
+    border: 1.5px solid $borda;
+    border-radius: 10px;
+    outline: 0;
+    transition: border-color 0.2s;
+    &:focus {
+      background: #fff;
+      border-color: $verde2;
+    }
+  }
+}
+
+.modal-acoes {
+  @include flex(flex-end, center, 10px);
+  margin-top: 1.5rem;
+}
