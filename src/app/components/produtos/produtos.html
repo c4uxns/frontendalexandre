@@ -50,12 +50,12 @@
             </tr>
           </thead>
           <tbody>
-            @for (p of produtos(); track p.id ?? p.nome) {
+            @for (p of produtos(); track p?.id ?? p?.nome) {
               <tr>
                 <td>
-                  <img class="table-prod-img" [src]="imagem(p)" [alt]="p.nome" (error)="imagemQuebrada($event)" />
+                  <img class="table-prod-img" [src]="imagem(p)" [alt]="p?.nome" (error)="imagemQuebrada($event)" />
                 </td>
-                <td><strong>{{ p.nome }}</strong></td>
+                <td><strong>{{ p?.nome }}</strong></td>
                 <td class="cell-desc">{{ p.descricao }}</td>
                 <td>{{ precoFormatado(p.preco) }}</td>
                 <td>{{ p.quantidade }}</td>

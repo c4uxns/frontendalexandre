@@ -33,8 +33,14 @@ export class Produtos implements OnInit {
   readonly total = computed(() => this.produtos().length);
   readonly precoMedio = computed(() => {
     const lista = this.produtos();
-    if (lista.length === 0) return 0;
-    return lista.reduce((soma, p) => soma + (Number(p.preco) || 0), 0) / lista.length;
+    if (!lista || lista.length === 0) return 0;
+    
+    // Filtra elementos nulos/indefinidos e valida se p.preco existe
+    const listaValida = lista.filter(p => p !== null && p !== undefined);
+    if (listaValida.length === 0) return 0;
+
+    const soma = listaValida.reduce((acc, p) => acc + (Number(p?.preco) || 0), 0);
+    return soma / listaValida.length;
   });
 
   form = this.formVazio();
@@ -47,6 +53,7 @@ export class Produtos implements OnInit {
     this.carregando.set(true);
     this.http.get<Produto[]>(this.apiUrl).subscribe({
       next: (dados) => {
+        const listaLimpa = (dados || []).filter(p => p !== null && p !== undefined);
         this.produtos.set(dados);
         this.carregando.set(false);
       },
@@ -91,8 +98,9 @@ export class Produtos implements OnInit {
 
     if (id) {
       this.http.put<Produto>(`${this.apiUrl}/${id}`, formData).subscribe({
-        next: (produtoAtualizado) => {
-          this.produtos.update((lista) => lista.map((p) => (p.id === id ? produtoAtualizado : p)));
+        next: () => {
+          // Em vez de substituir manualmente, recarrega a lista do servidor
+          this.carregarProdutos();
           this.salvando.set(false);
           this.fecharModal();
         },
@@ -104,8 +112,9 @@ export class Produtos implements OnInit {
       });
     } else {
       this.http.post<Produto>(this.apiUrl, formData).subscribe({
-        next: (novoProduto) => {
-          this.produtos.update((lista) => [novoProduto, ...lista]);
+        next: () => {
+          // Em vez de adicionar manualmente no topo, recarrega a lista do servidor
+          this.carregarProdutos();
           this.salvando.set(false);
           this.fecharModal();
         },
@@ -169,7 +178,8 @@ export class Produtos implements OnInit {
 
   // Converte os bytes do banco (array de números) em Base64 para exibir na tag <img> com segurança
   imagem(p: Produto): string {
-    if (!p.imagem) return IMG_PADRAO;
+    // Proteção crucial: se o produto em si for nulo ou indefinido, retorna a imagem padrão imediatamente
+    if (!p || !p.imagem) return IMG_PADRAO;
 
     if (typeof p.imagem === 'string') {
       if (p.imagem.startsWith('http') || p.imagem.startsWith('data:')) {
