@@ -23,12 +23,25 @@
     <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2" />
     <path d="m20 20-3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
   </symbol>
+  <!-- NOVOS -->
+  <symbol id="i-heart" viewBox="0 0 24 24">
+    <path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5c0 6.1-8 11-8 11Z" fill="var(--heart-fill, none)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+  </symbol>
+  <symbol id="i-up" viewBox="0 0 24 24">
+    <path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+  <symbol id="i-close" viewBox="0 0 24 24">
+    <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+  </symbol>
 </svg>
 
 <a class="skip-link" href="#catalogo">Pular para o catálogo</a>
 
+<!-- Barra de progresso de rolagem -->
+<div class="progress" aria-hidden="true"><span [style.width.%]="progresso()"></span></div>
+
 <!-- HEADER -->
-<header class="topbar">
+<header class="topbar" [class.topbar--solid]="rolou()">
   <div class="wrap topbar__inner">
     <a class="brand" routerLink="/" aria-label="Alexandre Cosméticos — página inicial">
       <svg class="brand__logo" aria-hidden="true"><use href="#i-plant" /></svg>
@@ -38,18 +51,22 @@
       </span>
     </a>
 
-    <!-- Botão discreto de login direcionando para /login -->
     <a class="login-discreto" routerLink="/login" aria-label="Acessar área de login">Login</a>
   </div>
 </header>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" (mousemove)="onHeroMove($event)" (mouseleave)="onHeroLeave($event)">
   <div class="hero__bg" aria-hidden="true">
     <span class="blob blob--a"></span>
     <span class="blob blob--b"></span>
     <svg class="leaf-deco leaf-deco--a"><use href="#i-leaf" /></svg>
     <svg class="leaf-deco leaf-deco--b"><use href="#i-leaf" /></svg>
+    <!-- folhas caindo -->
+    @for (f of folhas; track f.id) {
+      <svg class="falling" [style.left.%]="f.left" [style.width.px]="f.size" [style.height.px]="f.size"
+           [style.animation-duration.s]="f.dur" [style.animation-delay.s]="f.delay"><use href="#i-leaf" /></svg>
+    }
   </div>
 
   <div class="wrap hero__inner">
@@ -66,11 +83,11 @@
       </p>
 
       <div class="hero__actions">
-        <a class="btn btn--gold" href="#catalogo">
+        <a class="btn btn--gold" data-magnetic href="#catalogo">
           Ver catálogo
           <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg>
         </a>
-        <a class="btn btn--ghost" [href]="instagramUrl" target="_blank" rel="noopener"
+        <a class="btn btn--ghost" data-magnetic [href]="instagramUrl" target="_blank" rel="noopener"
            aria-label="Abrir o Instagram @alexandrecosmeticospvh (abre em nova aba)">
           <svg class="icon" aria-hidden="true"><use href="#i-instagram" /></svg>
           Instagram
@@ -93,7 +110,7 @@
 
 <!-- CATÁLOGO -->
 <main id="catalogo" class="wrap catalogo">
-  <div class="section-header">
+  <div class="section-header reveal">
     <span class="eyebrow">Nossos produtos</span>
     <h2 class="section-title">Nosso Catálogo</h2>
     <div class="divider" aria-hidden="true">
@@ -119,16 +136,30 @@
         [value]="busca()"
         (input)="onBusca($event)"
       />
+      @if (busca()) {
+        <button type="button" class="search__clear" aria-label="Limpar busca" (click)="limparBusca()">
+          <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+        </button>
+      }
     </div>
-    @if (!carregando() && !erro()) {
-      <p class="toolbar__count" aria-live="polite">{{ rotuloResultado() }}</p>
-    }
+
+    <div class="toolbar__right">
+      <button type="button" class="chip" [class.chip--on]="somenteFavoritos()"
+              [attr.aria-pressed]="somenteFavoritos()" (click)="alternarFiltroFavoritos()">
+        <svg class="icon" aria-hidden="true"><use href="#i-heart" /></svg>
+        Favoritos
+        <span class="chip__n" [class.chip__n--bump]="bump()">{{ totalFavoritos() }}</span>
+      </button>
+      @if (!carregando() && !erro()) {
+        <p class="toolbar__count" aria-live="polite">{{ rotuloResultado() }}</p>
+      }
+    </div>
   </div>
 
   @if (carregando()) {
     <div class="product-grid" aria-hidden="true">
       @for (i of esqueleto; track i) {
-        <div class="product-card">
+        <div class="product-card product-card--static">
           <div class="skeleton skeleton--img"></div>
           <div class="product-body">
             <div class="skeleton skeleton--line skeleton--w60"></div>
@@ -148,12 +179,19 @@
   } @else {
     <div class="product-grid">
       @for (p of produtosFiltrados(); track p.id ?? p.nome; let i = $index) {
-        <article class="product-card" [style.animation-delay.ms]="(i % 8) * 70">
+        <article class="product-card" [style.animation-delay.ms]="(i % 8) * 70"
+                 (mousemove)="onTilt($event)" (mouseleave)="onTiltLeave($event)">
           <div class="product-img-wrapper">
             <span class="product-tag">
               <svg class="icon" aria-hidden="true"><use href="#i-leaf" /></svg>
               100% Natural
             </span>
+            <button type="button" class="heart" [class.heart--on]="ehFavorito(p)"
+                    [attr.aria-pressed]="ehFavorito(p)"
+                    [attr.aria-label]="(ehFavorito(p) ? 'Remover ' : 'Favoritar ') + p.nome"
+                    (click)="alternarFavorito(p)">
+              <svg class="icon" aria-hidden="true"><use href="#i-heart" /></svg>
+            </button>
             <img
               class="product-img"
               [src]="imagem(p)"
@@ -187,7 +225,11 @@
       } @empty {
         <div class="estado estado--grid">
           <svg class="icon estado__icon" aria-hidden="true"><use href="#i-leaf" /></svg>
-          @if (busca()) {
+          @if (somenteFavoritos() && !busca()) {
+            <h3>Nenhum favorito ainda</h3>
+            <p>Toque no coração de um produto para guardá-lo aqui.</p>
+            <button type="button" class="btn btn--green" (click)="alternarFiltroFavoritos()">Ver todos os produtos</button>
+          } @else if (busca()) {
             <h3>Nenhum produto encontrado</h3>
             <p>Não encontramos resultados para a sua busca.</p>
             <button type="button" class="btn btn--green" (click)="limparBusca()">Limpar busca</button>
@@ -203,11 +245,11 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="wrap footer__inner">
+  <div class="wrap footer__inner reveal">
     <svg class="footer__plant" aria-hidden="true"><use href="#i-plant" /></svg>
     <p class="footer__thanks">Agradecemos sua preferência!</p>
     <p class="footer__tagline">Beleza • Saúde • Bem-estar</p>
-    <a class="footer__link" [href]="instagramUrl" target="_blank" rel="noopener"
+    <a class="footer__link" data-magnetic [href]="instagramUrl" target="_blank" rel="noopener"
        aria-label="Instagram @alexandrecosmeticospvh (abre em nova aba)">
       <svg class="icon" aria-hidden="true"><use href="#i-instagram" /></svg>
       &#64;alexandrecosmeticospvh
@@ -217,3 +259,9 @@
     &copy; {{ anoAtual }} ALEXANDRE Cosméticos — Todos os direitos reservados.
   </div>
 </footer>
+
+<!-- Voltar ao topo -->
+<button type="button" class="fab" [class.fab--show]="mostrarTopo()" aria-label="Voltar ao topo"
+        [attr.tabindex]="mostrarTopo() ? 0 : -1" (click)="voltarAoTopo()">
+  <svg class="icon" aria-hidden="true"><use href="#i-up" /></svg>
+</button>

@@ -785,21 +785,351 @@ a {
   }
 }
 
-/* ---------- Responsivo ---------- */
-@media (min-width: 56rem) {
-  .hero {
-    padding: 10rem 0 8.5rem;
-  }
+/* =====================================================================
+   ADICIONE ESTE BLOCO AO FINAL DO home.scss (antes do @media reduced-motion
+   pode ficar, o bloco de reduced-motion abaixo já cobre os novos efeitos)
+   ===================================================================== */
 
-  .hero__inner {
-    grid-template-columns: 1.15fr 0.85fr;
-  }
+/* ---------- Ripple (criado via JS: precisa de ::ng-deep) ---------- */
+:host ::ng-deep .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.45);
+  transform: scale(0);
+  pointer-events: none;
+  animation: onda 0.6s ease-out forwards;
+}
 
-  .hero__visual {
+@keyframes onda {
+  to { transform: scale(1); opacity: 0; }
+}
+
+/* ---------- Barra de progresso ---------- */
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 30;
+  height: 3px;
+  pointer-events: none;
+
+  span {
     display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-500), var(--gold));
+    box-shadow: 0 0 10px rgb(196 167 98 / 0.7);
+    transition: width 0.1s linear;
+  }
+}
+
+/* ---------- Header que ganha corpo ao rolar ---------- */
+.topbar {
+  position: fixed;
+  transition: background-color 0.35s ease, box-shadow 0.35s ease, backdrop-filter 0.35s ease;
+
+  .topbar__inner { transition: padding 0.35s ease; }
+
+  &--solid {
+    background: rgb(18 40 28 / 0.82);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.5);
+
+    .topbar__inner { padding-block: 0.6rem; }
+  }
+}
+
+.login-discreto { transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.2s ease; }
+.login-discreto:active { transform: scale(0.94); }
+
+/* ---------- Botões mais "físicos" ---------- */
+.btn,
+.btn-contact,
+.footer__link {
+  position: relative;
+  overflow: hidden;
+  translate: var(--tx, 0) var(--ty, 0);
+  transition:
+    translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+
+  /* brilho que atravessa o botão no hover */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.35) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
   }
 
-  .brand__title {
-    font-size: 1.6rem;
+  &:hover::before {
+    transform: translateX(120%);
+    transition: transform 0.7s ease;
   }
+
+  /* afunda ao pressionar */
+  &:active {
+    transform: translateY(1px) scale(0.96);
+    box-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.4);
+    transition-duration: 0.08s;
+  }
+}
+
+.btn--gold:hover { box-shadow: 0 16px 30px -8px rgb(196 167 98 / 0.75); }
+.btn .icon,
+.btn-contact .icon { transition: transform 0.25s ease; }
+.btn:hover .icon { transform: translateX(4px); }
+
+/* ---------- Entrada orquestrada do hero (único movimento automático) ---------- */
+.hero__content > * {
+  animation: surgir 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+
+  &:nth-child(1) { animation-delay: 0.05s; }
+  &:nth-child(2) { animation-delay: 0.18s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.42s; }
+  &:nth-child(5) { animation-delay: 0.55s; }
+}
+
+/* ---------- Parallax pelo mouse ---------- */
+.hero { --mx: 0; --my: 0; }
+.blob--a { translate: calc(var(--mx) * -30px) calc(var(--my) * -20px); transition: translate 0.4s ease-out; }
+.blob--b { translate: calc(var(--mx) * 25px) calc(var(--my) * 18px); transition: translate 0.4s ease-out; }
+.leaf-deco--a { translate: calc(var(--mx) * 14px) calc(var(--my) * 10px); transition: translate 0.5s ease-out; }
+.leaf-deco--b { translate: calc(var(--mx) * -18px) calc(var(--my) * -12px); transition: translate 0.5s ease-out; }
+.arch { translate: calc(var(--mx) * 12px) calc(var(--my) * 8px); transition: translate 0.4s ease-out; }
+.arch__plant { animation: balanco 7s ease-in-out infinite; transform-origin: 50% 90%; }
+
+@keyframes balanco {
+  50% { transform: rotate(2.5deg); }
+}
+
+/* Folhas caindo */
+.falling {
+  position: absolute;
+  top: -10%;
+  color: var(--gold);
+  opacity: 0;
+  animation: cair linear infinite;
+}
+
+@keyframes cair {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.35; }
+  90%  { opacity: 0.25; }
+  100% { transform: translate(60px, 115vh) rotate(420deg); opacity: 0; }
+}
+
+/* ---------- Revelar ao rolar ---------- */
+.reveal {
+  opacity: 0;
+  translate: 0 28px;
+  transition: opacity 0.8s ease, translate 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  &.is-visible { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- Busca ---------- */
+.search__input {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--green-600);
+    box-shadow: 0 0 0 4px rgb(79 127 58 / 0.18), var(--shadow-sm);
+    transform: translateY(-1px);
+  }
+}
+
+.search:focus-within .search__icon { transform: translateY(-50%) scale(1.15); }
+.search__icon { transition: transform 0.25s ease; }
+
+.search__clear {
+  position: absolute;
+  top: 50%;
+  right: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  translate: 0 -50%;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(31 61 43 / 0.08);
+  color: var(--green-900);
+  cursor: pointer;
+  animation: pop 0.25s ease;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+
+  &:hover { background: rgb(31 61 43 / 0.18); }
+  &:active { transform: scale(0.88); }
+}
+
+.toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ---------- Chip de favoritos ---------- */
+.chip {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--green-900);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+
+  &:hover { transform: translateY(-2px); box-shadow: 0 8px 16px -8px rgb(18 40 28 / 0.35); }
+  &:active { transform: scale(0.95); }
+
+  &--on {
+    background: var(--green-900);
+    color: var(--cream);
+    .icon { --heart-fill: var(--gold); color: var(--gold); }
+  }
+}
+
+.chip__n {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding-inline: 0.35rem;
+  border-radius: 999px;
+  background: rgb(31 61 43 / 0.1);
+  font-size: 0.75rem;
+  transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+
+  &--bump { transform: scale(1.5); }
+}
+
+.chip--on .chip__n { background: rgb(246 243 232 / 0.2); }
+
+/* ---------- Cards: inclinação 3D + brilho que segue o mouse ---------- */
+.product-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease-out, box-shadow 0.35s ease;
+  will-change: transform;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(18rem circle at var(--gx, 50%) var(--gy, 0%), rgb(255 255 255 / 0.22), transparent 45%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-8px);
+    &::after { opacity: 1; }
+  }
+
+  &--static { transform: none; animation: none; }
+  &--static:hover { transform: none; }
+}
+
+/* ---------- Coração de favorito ---------- */
+.heart {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  z-index: 2;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(18 40 28 / 0.6);
+  backdrop-filter: blur(6px);
+  color: var(--cream);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.25s ease;
+
+  .icon { width: 1.35rem; height: 1.35rem; }
+
+  &:hover { transform: scale(1.12); background: rgb(18 40 28 / 0.85); }
+  &:active { transform: scale(0.88); }
+
+  &--on {
+    color: #e8727a;
+    --heart-fill: #e8727a;
+    background: rgb(255 253 247 / 0.95);
+    .icon { animation: coracao 0.5s cubic-bezier(0.3, 1.6, 0.5, 1); }
+  }
+}
+
+@keyframes coracao {
+  0%   { transform: scale(0.4); }
+  60%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+}
+
+/* ---------- Voltar ao topo ---------- */
+.fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 25;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-600), var(--green-900));
+  color: var(--cream);
+  cursor: pointer;
+  box-shadow: 0 12px 24px -8px rgb(18 40 28 / 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px) scale(0.7);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1), box-shadow 0.25s ease;
+
+  .icon { width: 1.3rem; height: 1.3rem; transition: transform 0.25s ease; }
+
+  &--show { opacity: 1; pointer-events: auto; transform: none; }
+  &--show:hover { transform: translateY(-4px); box-shadow: 0 18px 28px -8px rgb(18 40 28 / 0.7); .icon { transform: translateY(-3px); } }
+  &--show:active { transform: scale(0.9); }
+}
+
+/* ---------- Acessibilidade: sem movimento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .falling,
+  .arch__plant,
+  .hero__content > *,
+  .search__clear,
+  .heart--on .icon { animation: none; }
+
+  .reveal { opacity: 1; translate: none; transition: none; }
+  .product-card,
+  .product-card:hover { transform: none; }
+  .btn::before,
+  .btn-contact::before,
+  .footer__link::before { display: none; }
 }
