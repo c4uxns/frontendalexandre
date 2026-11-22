@@ -10,7 +10,7 @@ export interface Produto {
   descricao: string;
   preco: number;
   quantidade: number;
-  imagem?: any; // Pode vir como array de bytes ou string
+  imagem?: string;
 }
 
 const IMG_PADRAO = 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=500';

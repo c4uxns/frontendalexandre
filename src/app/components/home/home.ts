@@ -7,10 +7,11 @@ export interface Produto {
   nome: string;
   descricao: string;
   preco: number;
-  image?: string;
+  imagem?: string; // Nome do arquivo ou URL da imagem vinda do back-end
+  image?: string; // Nome do arquivo ou URL da imagem vinda do back-end
 }
 
-const IMG_PADRAO = 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=500';
+  const IMG_PADRAO = 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=500';
 
 const normalizar = (valor: string): string =>
   valor
@@ -26,6 +27,7 @@ const normalizar = (valor: string): string =>
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
+
 export class Home implements OnInit {
   private http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:8080/v1/produtos';
@@ -60,7 +62,8 @@ export class Home implements OnInit {
 
     this.http.get<Produto[]>(this.apiUrl).subscribe({
       next: (dados) => {
-        this.produtos.set(dados);
+        const listaLimpa = (dados || []).filter(p => p !== null && p !== undefined);
+        this.produtos.set(listaLimpa);
         this.carregando.set(false);
       },
       error: (err) => {
@@ -83,8 +86,27 @@ export class Home implements OnInit {
     return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
+  // Método ajustado para ligar o nome do arquivo ao endpoint de uploads
   imagem(p: Produto): string {
-    return p.image && p.image.trim() !== '' ? p.image : IMG_PADRAO;
+    // Alinhe para p.imagem ou p.image conforme a sua interface Produto
+    const imgData = p.imagem || p.image; 
+
+    if (!imgData || imgData.trim() === '') {
+      return IMG_PADRAO;
+    }
+
+    // Se já for uma URL externa (ex: Unsplash)
+    if (imgData.startsWith('http')) {
+      return imgData;
+    }
+
+    // Se já vier com o prefixo data: do base64
+    if (imgData.startsWith('data:')) {
+      return imgData;
+    }
+
+    // Se for uma string Base64 pura (sem o prefixo), adicionamos o prefixo para o HTML renderizar
+    return `data:image/jpeg;base64,${imgData}`;
   }
 
   imagemQuebrada(evento: Event): void {
